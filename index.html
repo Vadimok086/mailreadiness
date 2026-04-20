@@ -3,19 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mail Readiness</title>
-  <meta name="description" content="Authorized email security awareness and internal simulation services for organizations." />
+  <title>MailReadiness | Email Security Audit & Awareness</title>
+  <meta name="description" content="MailReadiness helps SMBs improve email security through audits, suspicious email review, awareness sessions, and ongoing monitoring." />
   <style>
     :root {
-      --bg: #0b1220;
-      --panel: #121a2b;
-      --muted: #94a3b8;
-      --text: #e5eefc;
-      --line: #23314f;
-      --accent: #3b82f6;
-      --accent-2: #60a5fa;
-      --ok: #22c55e;
-      --shadow: 0 20px 60px rgba(0,0,0,.35);
+      --bg: #07111f;
+      --bg-2: #0b1728;
+      --panel: rgba(13, 24, 43, 0.86);
+      --panel-2: rgba(255, 255, 255, 0.04);
+      --text: #eef4ff;
+      --muted: #97a7c3;
+      --line: rgba(255,255,255,0.10);
+      --accent: #4f8cff;
+      --accent-2: #7bb0ff;
+      --accent-3: #cfe0ff;
+      --ok: #2fd180;
+      --warn: #ffcc66;
+      --shadow: 0 18px 60px rgba(0,0,0,.35);
+      --radius: 24px;
+      --radius-sm: 16px;
+      --max: 1160px;
     }
 
     * { box-sizing: border-box; }
@@ -23,23 +30,41 @@
     body {
       margin: 0;
       font-family: Inter, Arial, Helvetica, sans-serif;
-      background: radial-gradient(circle at top, #12203e 0%, var(--bg) 45%);
       color: var(--text);
+      background:
+        radial-gradient(circle at 12% 10%, rgba(79,140,255,.20), transparent 28%),
+        radial-gradient(circle at 88% 4%, rgba(123,176,255,.12), transparent 24%),
+        linear-gradient(180deg, #0a1424 0%, #07111f 52%, #050c17 100%);
       line-height: 1.6;
     }
 
+    a { color: inherit; }
+
     .container {
-      width: min(1120px, calc(100% - 32px));
+      width: min(var(--max), calc(100% - 32px));
       margin: 0 auto;
+    }
+
+    .grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.025));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
     }
 
     header {
       position: sticky;
       top: 0;
-      backdrop-filter: blur(10px);
-      background: rgba(11, 18, 32, .72);
+      z-index: 40;
+      backdrop-filter: blur(16px);
+      background: rgba(5, 12, 23, 0.72);
       border-bottom: 1px solid rgba(255,255,255,.06);
-      z-index: 20;
     }
 
     .nav {
@@ -47,248 +72,563 @@
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      padding: 16px 0;
+      padding: 14px 0;
     }
 
     .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
       font-weight: 800;
       letter-spacing: .2px;
-      font-size: 1.1rem;
     }
 
-    .brand span { color: var(--accent-2); }
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 1rem;
+      font-weight: 900;
+      color: white;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 10px 30px rgba(79,140,255,.35);
+      flex: 0 0 auto;
+    }
 
-    .nav a {
-      color: var(--muted);
+    .brand-text span { color: var(--accent-2); }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
       text-decoration: none;
-      margin-left: 18px;
-      font-size: .95rem;
+      color: var(--muted);
+      font-size: .96rem;
     }
 
-    .nav a:hover { color: var(--text); }
+    .nav-links a:hover { color: var(--text); }
+
+    .lang-switch {
+      display: inline-flex;
+      padding: 4px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+    }
+
+    .lang-btn {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .lang-btn.active {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+      box-shadow: 0 8px 20px rgba(79,140,255,.35);
+    }
+
+    main { overflow: hidden; }
 
     .hero {
-      padding: 88px 0 56px;
+      padding: 72px 0 44px;
     }
 
     .hero-grid {
       display: grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 28px;
-      align-items: center;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 26px;
+      align-items: stretch;
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 12px;
-      background: rgba(59,130,246,.12);
-      border: 1px solid rgba(96,165,250,.25);
+      padding: 9px 14px;
       border-radius: 999px;
-      color: #bfdbfe;
+      border: 1px solid rgba(123,176,255,.28);
+      background: rgba(79,140,255,.12);
+      color: var(--accent-3);
       font-size: .9rem;
       margin-bottom: 18px;
     }
 
     h1 {
-      font-size: clamp(2.4rem, 6vw, 4.2rem);
-      line-height: 1.05;
-      margin: 0 0 18px;
-      letter-spacing: -1.2px;
+      margin: 0 0 16px;
+      font-size: clamp(2.5rem, 5.6vw, 4.6rem);
+      line-height: 1.02;
+      letter-spacing: -1.4px;
+      max-width: 12ch;
     }
 
-    .hero p {
+    .hero-copy {
       color: var(--muted);
       font-size: 1.08rem;
-      max-width: 760px;
-      margin: 0 0 28px;
+      max-width: 700px;
+      margin: 0 0 24px;
+    }
+
+    .hero-points {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .hero-point {
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.06);
+      color: #dbe8ff;
+      font-size: .92rem;
     }
 
     .cta-row {
       display: flex;
-      gap: 14px;
+      gap: 12px;
       flex-wrap: wrap;
+      margin-bottom: 18px;
     }
 
     .btn {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       padding: 14px 20px;
-      border-radius: 14px;
+      border-radius: 16px;
       text-decoration: none;
-      font-weight: 700;
-      transition: .2s ease;
+      font-weight: 800;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
       border: 1px solid transparent;
+      min-height: 50px;
     }
+
+    .btn:hover { transform: translateY(-1px); }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
       color: white;
-      box-shadow: var(--shadow);
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 18px 40px rgba(79,140,255,.28);
     }
-
-    .btn-primary:hover { transform: translateY(-1px); }
 
     .btn-secondary {
-      border-color: var(--line);
       color: var(--text);
       background: rgba(255,255,255,.03);
+      border-color: var(--line);
     }
 
-    .btn-secondary:hover { background: rgba(255,255,255,.06); }
-
-    .card {
-      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: var(--shadow);
+    .hero-note {
+      color: #a8b7d4;
+      font-size: .92rem;
     }
 
-    .status {
-      display: grid;
-      gap: 14px;
-    }
-
-    .status-item {
+    .hero-side {
+      padding: 26px;
       display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 14px 0;
-      border-bottom: 1px solid rgba(255,255,255,.06);
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 100%;
     }
 
-    .status-item:last-child { border-bottom: 0; }
+    .mini-title {
+      margin: 0 0 18px;
+      font-size: 1.22rem;
+    }
+
+    .signal-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .signal-item {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+
+    .signal-item:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
 
     .dot {
-      width: 11px;
-      height: 11px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
       background: var(--ok);
-      margin-top: 7px;
-      box-shadow: 0 0 0 6px rgba(34,197,94,.12);
-      flex: 0 0 auto;
+      margin-top: 8px;
+      box-shadow: 0 0 0 6px rgba(47,209,128,.12);
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .kpi {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.06);
+    }
+
+    .kpi strong {
+      display: block;
+      font-size: 1.25rem;
+      margin-bottom: 4px;
+    }
+
+    .kpi span {
+      color: var(--muted);
+      font-size: .9rem;
     }
 
     section {
-      padding: 26px 0 64px;
+      padding: 26px 0 70px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 20px;
+      margin-bottom: 28px;
     }
 
     .section-title {
-      font-size: 2rem;
-      margin: 0 0 12px;
+      margin: 0 0 10px;
+      font-size: clamp(1.8rem, 4vw, 2.45rem);
+      letter-spacing: -.6px;
     }
 
     .section-subtitle {
+      margin: 0;
       color: var(--muted);
-      max-width: 760px;
-      margin: 0 0 28px;
+      max-width: 770px;
     }
 
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
-    .service h3, .contact h3 { margin-top: 0; }
-    .service p, .contact p { color: var(--muted); }
-
-    .pill {
-      display: inline-block;
-      font-size: .82rem;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.08);
-      color: #cbd5e1;
-      margin: 4px 6px 0 0;
-      background: rgba(255,255,255,.03);
-    }
-
+    .services-grid,
+    .trust-grid,
+    .steps-grid,
+    .faq-grid,
     .contact-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
       gap: 18px;
     }
 
-    .contact a {
-      color: #bfdbfe;
+    .services-grid { grid-template-columns: repeat(3, 1fr); }
+    .trust-grid { grid-template-columns: repeat(4, 1fr); }
+    .steps-grid { grid-template-columns: repeat(4, 1fr); }
+    .faq-grid { grid-template-columns: repeat(2, 1fr); }
+    .contact-grid { grid-template-columns: 1.05fr .95fr; }
+
+    .service-card,
+    .trust-card,
+    .step-card,
+    .faq-card,
+    .contact-card {
+      padding: 22px;
+    }
+
+    .card-topline {
+      color: var(--accent-2);
+      font-size: .82rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .service-card h3,
+    .trust-card h3,
+    .step-card h3,
+    .faq-card h3,
+    .contact-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.18rem;
+    }
+
+    .service-card p,
+    .trust-card p,
+    .step-card p,
+    .faq-card p,
+    .contact-card p,
+    .about-copy,
+    .list li,
+    .meta {
+      color: var(--muted);
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      color: #d8e6ff;
+      font-size: .84rem;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .about-box {
+      padding: 26px;
+    }
+
+    .list {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .list li { margin-bottom: 8px; }
+
+    .notice {
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(255, 204, 102, 0.08);
+      border: 1px solid rgba(255, 204, 102, 0.16);
+      color: #ffe5ad;
+      font-size: .95rem;
+    }
+
+    .contact-card a {
+      color: #cfe0ff;
       text-decoration: none;
+      word-break: break-word;
+    }
+
+    .contact-card a:hover { text-decoration: underline; }
+
+    .contact-links {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
     }
 
     footer {
-      padding: 26px 0 50px;
-      color: var(--muted);
+      padding: 22px 0 44px;
       border-top: 1px solid rgba(255,255,255,.06);
-      margin-top: 20px;
+      color: var(--muted);
     }
 
-    @media (max-width: 920px) {
-      .hero-grid, .grid-3, .contact-grid {
-        grid-template-columns: 1fr;
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    [data-lang] { display: none; }
+    [data-lang].active { display: block; }
+    [data-lang].active.inline { display: inline; }
+    [data-lang].active.inline-flex { display: inline-flex; }
+
+    @media (max-width: 1050px) {
+      .hero-grid,
+      .services-grid,
+      .trust-grid,
+      .steps-grid,
+      .faq-grid,
+      .contact-grid,
+      .split {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .hero-grid { grid-template-columns: 1fr; }
+      .contact-grid,
+      .faq-grid,
+      .steps-grid,
+      .services-grid,
+      .trust-grid,
+      .split { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 840px) {
+      .nav {
+        flex-wrap: wrap;
+        align-items: flex-start;
+      }
+
+      .nav-right {
+        width: 100%;
+        justify-content: space-between;
       }
 
       .nav-links {
-        display: none;
+        overflow-x: auto;
+        gap: 14px;
+        padding-bottom: 2px;
       }
 
-      .hero {
-        padding-top: 56px;
-      }
+      .kpis { grid-template-columns: 1fr; }
+      .section-head { display: block; }
+    }
+
+    @media (max-width: 560px) {
+      body { line-height: 1.55; }
+      .hero { padding-top: 48px; }
+      .container { width: min(var(--max), calc(100% - 20px)); }
+      .card, .service-card, .trust-card, .step-card, .faq-card, .contact-card, .hero-side, .about-box { padding: 18px; }
+      h1 { letter-spacing: -1px; }
+      .btn { width: 100%; }
+      .cta-row { flex-direction: column; }
     }
   </style>
 </head>
 <body>
   <header>
     <div class="container nav">
-      <div class="brand">Mail<span>Readiness</span></div>
-      <nav class="nav-links">
-        <a href="#services">Services</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-      </nav>
+      <a href="#top" class="brand" aria-label="MailReadiness home">
+        <div class="brand-mark">M</div>
+        <div class="brand-text">Mail<span>Readiness</span></div>
+      </a>
+
+      <div class="nav-right">
+        <nav class="nav-links" aria-label="Primary">
+          <a href="#services"><span data-lang="en" class="active inline">Services</span><span data-lang="it" class="inline">Servizi</span></a>
+          <a href="#how"><span data-lang="en" class="active inline">How it works</span><span data-lang="it" class="inline">Come funziona</span></a>
+          <a href="#about"><span data-lang="en" class="active inline">About</span><span data-lang="it" class="inline">Chi siamo</span></a>
+          <a href="#faq"><span data-lang="en" class="active inline">FAQ</span><span data-lang="it" class="inline">FAQ</span></a>
+          <a href="#contact"><span data-lang="en" class="active inline">Contact</span><span data-lang="it" class="inline">Contatti</span></a>
+        </nav>
+
+        <div class="lang-switch" aria-label="Language switcher">
+          <button class="lang-btn active" data-switch="en" type="button">EN</button>
+          <button class="lang-btn" data-switch="it" type="button">IT</button>
+        </div>
+      </div>
     </div>
   </header>
 
-  <main>
+  <main id="top">
     <section class="hero">
       <div class="container hero-grid">
         <div>
-          <div class="eyebrow">Authorized security awareness and email readiness services</div>
-          <h1>Help your organization prepare for email-based threats.</h1>
-          <p>
-            Mail Readiness provides authorized security awareness training, internal email security simulation,
-            and basic email posture review for organizations that want to improve resilience against phishing and social engineering.
+          <div class="eyebrow">
+            <span data-lang="en" class="active inline-flex">Email security for SMBs in Italy and Europe</span>
+            <span data-lang="it" class="inline-flex">Sicurezza email per PMI in Italia e in Europa</span>
+          </div>
+
+          <h1>
+            <span data-lang="en" class="active">Make business email harder to abuse.</span>
+            <span data-lang="it">Rendi la posta aziendale più difficile da compromettere.</span>
+          </h1>
+
+          <p class="hero-copy">
+            <span data-lang="en" class="active inline">MailReadiness helps small and mid-sized businesses improve email security through practical audits, suspicious email review, awareness sessions, and ongoing monitoring.</span>
+            <span data-lang="it" class="inline">MailReadiness aiuta piccole e medie imprese a migliorare la sicurezza email con audit pratici, revisione di email sospette, sessioni di awareness e monitoraggio continuativo.</span>
           </p>
+
+          <div class="hero-points">
+            <div class="hero-point"><span data-lang="en" class="active inline">Audit-first approach</span><span data-lang="it" class="inline">Approccio audit-first</span></div>
+            <div class="hero-point"><span data-lang="en" class="active inline">SMB-friendly</span><span data-lang="it" class="inline">Pensato per PMI</span></div>
+            <div class="hero-point"><span data-lang="en" class="active inline">Clear, actionable output</span><span data-lang="it" class="inline">Output chiaro e azionabile</span></div>
+          </div>
+
           <div class="cta-row">
-            <a class="btn btn-primary" href="mailto:security@mailreadiness.com">Contact Us</a>
-            <a class="btn btn-secondary" href="#services">View Services</a>
+            <a class="btn btn-primary" href="mailto:founder@mailreadiness.com?subject=MailReadiness%20Inquiry">
+              <span data-lang="en" class="active inline">Book a first conversation</span>
+              <span data-lang="it" class="inline">Prenota un primo contatto</span>
+            </a>
+            <a class="btn btn-secondary" href="#services">
+              <span data-lang="en" class="active inline">Explore services</span>
+              <span data-lang="it" class="inline">Scopri i servizi</span>
+            </a>
+          </div>
+
+          <div class="hero-note">
+            <span data-lang="en" class="active inline">Focused on legitimate business security improvement, approved reviews, and customer-authorized work.</span>
+            <span data-lang="it" class="inline">Focalizzato su miglioramento legittimo della sicurezza aziendale, review approvate e attività autorizzate dal cliente.</span>
           </div>
         </div>
 
-        <div class="card">
-          <h3 style="margin-top:0; font-size:1.3rem;">What we focus on</h3>
-          <div class="status">
-            <div class="status-item">
-              <span class="dot"></span>
-              <div>
-                <strong>Security awareness</strong><br>
-                Practical email security education for employees and teams.
+        <div class="card hero-side">
+          <div>
+            <h2 class="mini-title">
+              <span data-lang="en" class="active inline">What MailReadiness focuses on</span>
+              <span data-lang="it" class="inline">Su cosa si concentra MailReadiness</span>
+            </h2>
+
+            <div class="signal-list">
+              <div class="signal-item">
+                <span class="dot"></span>
+                <div>
+                  <strong><span data-lang="en" class="active inline">Email Security Audit</span><span data-lang="it" class="inline">Audit di Sicurezza Email</span></strong><br>
+                  <span class="meta" data-lang="en">Review of domain posture, authentication signals, and visible trust gaps.</span>
+                  <span class="meta" data-lang="it">Revisione della postura del dominio, segnali di autenticazione e gap di fiducia visibili.</span>
+                </div>
+              </div>
+              <div class="signal-item">
+                <span class="dot"></span>
+                <div>
+                  <strong><span data-lang="en" class="active inline">Suspicious Email Review</span><span data-lang="it" class="inline">Revisione di Email Sospette</span></strong><br>
+                  <span class="meta" data-lang="en">Practical analysis of suspicious messages and signs of active exposure.</span>
+                  <span class="meta" data-lang="it">Analisi pratica di messaggi sospetti e segnali di esposizione attiva.</span>
+                </div>
+              </div>
+              <div class="signal-item">
+                <span class="dot"></span>
+                <div>
+                  <strong><span data-lang="en" class="active inline">Awareness & Monitoring</span><span data-lang="it" class="inline">Awareness e Monitoraggio</span></strong><br>
+                  <span class="meta" data-lang="en">Support for staff awareness and recurring review where email risk is business-critical.</span>
+                  <span class="meta" data-lang="it">Supporto per awareness del personale e review periodiche quando il rischio email è critico per il business.</span>
+                </div>
               </div>
             </div>
-            <div class="status-item">
-              <span class="dot"></span>
-              <div>
-                <strong>Authorized internal simulation</strong><br>
-                Controlled testing campaigns for approved environments only.
-              </div>
+          </div>
+
+          <div class="kpis">
+            <div class="kpi">
+              <strong>SMB</strong>
+              <span data-lang="en" class="active">Italy / Europe focus</span>
+              <span data-lang="it">Focus Italia / Europa</span>
             </div>
-            <div class="status-item">
-              <span class="dot"></span>
-              <div>
-                <strong>Email readiness review</strong><br>
-                Basic checks for email authentication posture and sender trust.
-              </div>
+            <div class="kpi">
+              <strong>Audit</strong>
+              <span data-lang="en" class="active">First step, then follow-up</span>
+              <span data-lang="it">Primo passo, poi follow-up</span>
+            </div>
+            <div class="kpi">
+              <strong>Clear</strong>
+              <span data-lang="en" class="active">Practical next actions</span>
+              <span data-lang="it">Prossime azioni pratiche</span>
             </div>
           </div>
         </div>
@@ -297,84 +637,304 @@
 
     <section id="services">
       <div class="container">
-        <h2 class="section-title">Services</h2>
-        <p class="section-subtitle">
-          Services are intended for internal security improvement, training, and customer-approved testing only.
-        </p>
-
-        <div class="grid-3">
-          <div class="card service">
-            <h3>Email Security Readiness Review</h3>
-            <p>
-              High-level review of domain email readiness, authentication posture, and common trust signals.
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">
+              <span data-lang="en" class="active inline">Services built around real email risk</span>
+              <span data-lang="it" class="inline">Servizi costruiti sul rischio email reale</span>
+            </h2>
+            <p class="section-subtitle">
+              <span data-lang="en" class="active inline">The audit is the main entry point. From there, the scope can expand into suspicious email review, awareness sessions, or recurring monitoring.</span>
+              <span data-lang="it" class="inline">L’audit è il punto di ingresso principale. Da lì, il perimetro può estendersi a revisione di email sospette, sessioni di awareness o monitoraggio continuativo.</span>
             </p>
-            <span class="pill">Domain posture</span>
-            <span class="pill">Authentication review</span>
-            <span class="pill">Readiness checks</span>
           </div>
+        </div>
 
-          <div class="card service">
-            <h3>Security Awareness Campaigns</h3>
+        <div class="services-grid">
+          <article class="card service-card">
+            <div class="card-topline">01</div>
+            <h3>
+              <span data-lang="en" class="active inline">Email Security Audit</span>
+              <span data-lang="it" class="inline">Audit di Sicurezza Email</span>
+            </h3>
             <p>
-              Awareness-focused email campaigns designed to help organizations educate users and reinforce safe habits.
+              <span data-lang="en" class="active inline">A practical review of email authentication posture, sender trust signals, and visible domain-level weaknesses that can increase spoofing or phishing exposure.</span>
+              <span data-lang="it" class="inline">Una revisione pratica della postura di autenticazione email, dei segnali di fiducia del mittente e delle debolezze visibili a livello dominio che possono aumentare l’esposizione a spoofing o phishing.</span>
             </p>
-            <span class="pill">Awareness</span>
-            <span class="pill">Training</span>
-            <span class="pill">Reporting</span>
+            <div class="tag-row">
+              <span class="tag">SPF</span>
+              <span class="tag">DKIM</span>
+              <span class="tag">DMARC</span>
+              <span class="tag"><span data-lang="en" class="active inline">Readiness Review</span><span data-lang="it" class="inline">Readiness Review</span></span>
+            </div>
+          </article>
+
+          <article class="card service-card">
+            <div class="card-topline">02</div>
+            <h3>
+              <span data-lang="en" class="active inline">Suspicious Email Review</span>
+              <span data-lang="it" class="inline">Revisione di Email Sospette</span>
+            </h3>
+            <p>
+              <span data-lang="en" class="active inline">Review of suspicious messages to help organizations understand whether they are seeing spoofing, impersonation, phishing themes, or process weaknesses.</span>
+              <span data-lang="it" class="inline">Revisione di messaggi sospetti per aiutare le aziende a capire se stanno vedendo spoofing, impersonazione, temi di phishing o debolezze di processo.</span>
+            </p>
+            <div class="tag-row">
+              <span class="tag"><span data-lang="en" class="active inline">Header review</span><span data-lang="it" class="inline">Analisi header</span></span>
+              <span class="tag"><span data-lang="en" class="active inline">Risk context</span><span data-lang="it" class="inline">Contesto di rischio</span></span>
+              <span class="tag"><span data-lang="en" class="active inline">Practical findings</span><span data-lang="it" class="inline">Risultati pratici</span></span>
+            </div>
+          </article>
+
+          <article class="card service-card">
+            <div class="card-topline">03</div>
+            <h3>
+              <span data-lang="en" class="active inline">Awareness & Monthly Monitoring</span>
+              <span data-lang="it" class="inline">Awareness e Monitoraggio Mensile</span>
+            </h3>
+            <p>
+              <span data-lang="en" class="active inline">For organizations that want more than a one-time review: awareness sessions, repeated checks, and ongoing visibility into email-related risk.</span>
+              <span data-lang="it" class="inline">Per organizzazioni che vogliono più di una review una tantum: sessioni di awareness, verifiche ripetute e visibilità continuativa sul rischio email.</span>
+            </p>
+            <div class="tag-row">
+              <span class="tag"><span data-lang="en" class="active inline">Training</span><span data-lang="it" class="inline">Formazione</span></span>
+              <span class="tag"><span data-lang="en" class="active inline">Monitoring</span><span data-lang="it" class="inline">Monitoraggio</span></span>
+              <span class="tag"><span data-lang="en" class="active inline">Follow-up</span><span data-lang="it" class="inline">Follow-up</span></span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="trust">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">
+              <span data-lang="en" class="active inline">What clients can expect</span>
+              <span data-lang="it" class="inline">Cosa possono aspettarsi i clienti</span>
+            </h2>
+            <p class="section-subtitle">
+              <span data-lang="en" class="active inline">Clear scope, business-friendly communication, and output that is understandable even without an internal security team.</span>
+              <span data-lang="it" class="inline">Scope chiaro, comunicazione orientata al business e output comprensibile anche senza un team sicurezza interno.</span>
+            </p>
           </div>
+        </div>
 
-          <div class="card service">
-            <h3>Authorized Internal Simulation</h3>
-            <p>
-              Controlled and approved internal simulation exercises for customers who want to test employee readiness.
+        <div class="trust-grid">
+          <div class="card trust-card">
+            <h3><span data-lang="en" class="active inline">Clear findings</span><span data-lang="it" class="inline">Finding chiari</span></h3>
+            <p><span data-lang="en" class="active inline">A concise explanation of what was found, why it matters, and where the main risk sits.</span><span data-lang="it" class="inline">Una spiegazione concisa di ciò che è stato trovato, perché conta e dove si trova il rischio principale.</span></p>
+          </div>
+          <div class="card trust-card">
+            <h3><span data-lang="en" class="active inline">Practical recommendations</span><span data-lang="it" class="inline">Raccomandazioni pratiche</span></h3>
+            <p><span data-lang="en" class="active inline">Actionable next steps, not just technical noise or generic theory.</span><span data-lang="it" class="inline">Prossimi passi attuabili, non solo rumore tecnico o teoria generica.</span></p>
+          </div>
+          <div class="card trust-card">
+            <h3><span data-lang="en" class="active inline">Business-first language</span><span data-lang="it" class="inline">Linguaggio business-first</span></h3>
+            <p><span data-lang="en" class="active inline">Designed for owners, managers, and teams who need clarity without unnecessary complexity.</span><span data-lang="it" class="inline">Pensato per owner, manager e team che hanno bisogno di chiarezza senza complessità inutile.</span></p>
+          </div>
+          <div class="card trust-card">
+            <h3><span data-lang="en" class="active inline">Authorized engagement only</span><span data-lang="it" class="inline">Solo attività autorizzate</span></h3>
+            <p><span data-lang="en" class="active inline">Services are provided for legitimate customer-approved review, awareness, and internal improvement.</span><span data-lang="it" class="inline">I servizi sono erogati per review, awareness e miglioramento interno legittimo e approvato dal cliente.</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">
+              <span data-lang="en" class="active inline">How it works</span>
+              <span data-lang="it" class="inline">Come funziona</span>
+            </h2>
+            <p class="section-subtitle">
+              <span data-lang="en" class="active inline">A simple process designed for small and mid-sized businesses that need clarity and speed.</span>
+              <span data-lang="it" class="inline">Un processo semplice pensato per piccole e medie imprese che hanno bisogno di chiarezza e rapidità.</span>
             </p>
-            <span class="pill">Approved use only</span>
-            <span class="pill">Internal testing</span>
-            <span class="pill">Controlled delivery</span>
+          </div>
+        </div>
+
+        <div class="steps-grid">
+          <div class="card step-card">
+            <div class="card-topline">Step 1</div>
+            <h3><span data-lang="en" class="active inline">Initial conversation</span><span data-lang="it" class="inline">Primo contatto</span></h3>
+            <p><span data-lang="en" class="active inline">A short discussion to understand the business, current email setup, and the most relevant pain points.</span><span data-lang="it" class="inline">Un breve confronto per capire il business, l’attuale setup email e i punti critici più rilevanti.</span></p>
+          </div>
+          <div class="card step-card">
+            <div class="card-topline">Step 2</div>
+            <h3><span data-lang="en" class="active inline">Scope & input collection</span><span data-lang="it" class="inline">Definizione scope e raccolta input</span></h3>
+            <p><span data-lang="en" class="active inline">The scope is defined clearly and only the necessary inputs are requested for the agreed review.</span><span data-lang="it" class="inline">Lo scope viene definito con chiarezza e vengono richiesti solo gli input necessari per la review concordata.</span></p>
+          </div>
+          <div class="card step-card">
+            <div class="card-topline">Step 3</div>
+            <h3><span data-lang="en" class="active inline">Audit & analysis</span><span data-lang="it" class="inline">Audit e analisi</span></h3>
+            <p><span data-lang="en" class="active inline">MailReadiness performs the agreed review and maps visible risks, findings, and follow-up opportunities.</span><span data-lang="it" class="inline">MailReadiness esegue la review concordata e mappa rischi visibili, finding e possibili follow-up.</span></p>
+          </div>
+          <div class="card step-card">
+            <div class="card-topline">Step 4</div>
+            <h3><span data-lang="en" class="active inline">Report & next steps</span><span data-lang="it" class="inline">Report e prossimi passi</span></h3>
+            <p><span data-lang="en" class="active inline">The client receives a concise report with findings, recommendations, and the most suitable next service if needed.</span><span data-lang="it" class="inline">Il cliente riceve un report sintetico con finding, raccomandazioni e il servizio successivo più adatto, se necessario.</span></p>
           </div>
         </div>
       </div>
     </section>
 
     <section id="about">
+      <div class="container split">
+        <div class="card about-box">
+          <div class="card-topline">
+            <span data-lang="en" class="active inline">About MailReadiness</span>
+            <span data-lang="it" class="inline">Chi è MailReadiness</span>
+          </div>
+          <h2 class="section-title" style="margin-top:0;">
+            <span data-lang="en" class="active inline">Practical help for organizations that rely on email every day</span>
+            <span data-lang="it" class="inline">Supporto pratico per organizzazioni che dipendono dall’email ogni giorno</span>
+          </h2>
+          <p class="about-copy">
+            <span data-lang="en" class="active inline">MailReadiness is built around a simple idea: many businesses depend heavily on email, but do not always have time, internal expertise, or a structured process to evaluate email-related risk clearly.</span>
+            <span data-lang="it" class="inline">MailReadiness nasce da un’idea semplice: molte aziende dipendono fortemente dall’email, ma non hanno sempre tempo, competenze interne o un processo strutturato per valutare con chiarezza il rischio legato alla posta elettronica.</span>
+          </p>
+          <p class="about-copy">
+            <span data-lang="en" class="active inline">The focus is on clarity, practical output, and services that make sense for SMBs — not enterprise complexity for its own sake.</span>
+            <span data-lang="it" class="inline">Il focus è su chiarezza, output pratici e servizi che hanno senso per le PMI — non complessità enterprise fine a se stessa.</span>
+          </p>
+        </div>
+
+        <div class="card about-box">
+          <div class="card-topline">
+            <span data-lang="en" class="active inline">Best fit</span>
+            <span data-lang="it" class="inline">Ideale per</span>
+          </div>
+          <h3>
+            <span data-lang="en" class="active inline">Typical organizations MailReadiness can support</span>
+            <span data-lang="it" class="inline">Organizzazioni che MailReadiness può supportare</span>
+          </h3>
+          <ul class="list">
+            <li><span data-lang="en" class="active inline">Professional services firms</span><span data-lang="it" class="inline">Studi professionali</span></li>
+            <li><span data-lang="en" class="active inline">Accounting, tax, and advisory businesses</span><span data-lang="it" class="inline">Commercialisti, fiscalisti e consulenza</span></li>
+            <li><span data-lang="en" class="active inline">Retail, logistics, and operational SMBs</span><span data-lang="it" class="inline">PMI retail, logistica e operative</span></li>
+            <li><span data-lang="en" class="active inline">Medical or dental offices</span><span data-lang="it" class="inline">Studi medici o dentistici</span></li>
+            <li><span data-lang="en" class="active inline">Small teams without a mature internal security function</span><span data-lang="it" class="inline">Piccoli team senza una funzione sicurezza interna matura</span></li>
+          </ul>
+          <div class="notice" style="margin-top:18px;">
+            <span data-lang="en" class="active inline">Optional internal simulation is considered only where technically and operationally appropriate, and only with explicit customer authorization.</span>
+            <span data-lang="it" class="inline">La simulazione interna opzionale viene considerata solo quando tecnicamente e operativamente appropriata, e solo con autorizzazione esplicita del cliente.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
       <div class="container">
-        <h2 class="section-title">About</h2>
-        <p class="section-subtitle">
-          Mail Readiness is focused on practical, controlled, and business-authorized email security improvement.
-          We support organizations that want better awareness, safer behavior, and a clearer understanding of email-related risk.
-        </p>
+        <div class="section-head">
+          <div>
+            <h2 class="section-title"><span data-lang="en" class="active inline">FAQ</span><span data-lang="it" class="inline">FAQ</span></h2>
+            <p class="section-subtitle">
+              <span data-lang="en" class="active inline">A few common questions from businesses that want to improve email security without overcomplicating the process.</span>
+              <span data-lang="it" class="inline">Alcune domande frequenti di aziende che vogliono migliorare la sicurezza email senza complicare troppo il processo.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-grid">
+          <div class="card faq-card">
+            <h3><span data-lang="en" class="active inline">Do we need a full internal security team?</span><span data-lang="it" class="inline">Serve un team sicurezza interno completo?</span></h3>
+            <p><span data-lang="en" class="active inline">No. MailReadiness is designed to support organizations that may not have dedicated internal security resources.</span><span data-lang="it" class="inline">No. MailReadiness è pensato per supportare organizzazioni che potrebbero non avere risorse sicurezza dedicate internamente.</span></p>
+          </div>
+          <div class="card faq-card">
+            <h3><span data-lang="en" class="active inline">Is the audit the best place to start?</span><span data-lang="it" class="inline">L’audit è il miglior punto di partenza?</span></h3>
+            <p><span data-lang="en" class="active inline">Usually yes. The audit helps clarify where the main email-related weaknesses are before choosing broader follow-up services.</span><span data-lang="it" class="inline">Di solito sì. L’audit aiuta a chiarire dove si trovano le principali debolezze legate all’email prima di scegliere servizi di follow-up più ampi.</span></p>
+          </div>
+          <div class="card faq-card">
+            <h3><span data-lang="en" class="active inline">Can suspicious emails be reviewed?</span><span data-lang="it" class="inline">Le email sospette possono essere analizzate?</span></h3>
+            <p><span data-lang="en" class="active inline">Yes. Suspicious email review can be provided as a separate service or used in a limited way to support audit context.</span><span data-lang="it" class="inline">Sì. La revisione di email sospette può essere fornita come servizio separato o usata in modo limitato per supportare il contesto dell’audit.</span></p>
+          </div>
+          <div class="card faq-card">
+            <h3><span data-lang="en" class="active inline">Do you provide unauthorized testing?</span><span data-lang="it" class="inline">Fornite test non autorizzati?</span></h3>
+            <p><span data-lang="en" class="active inline">No. Services are provided only for legitimate, customer-approved review, awareness, and authorized internal improvement.</span><span data-lang="it" class="inline">No. I servizi vengono forniti solo per review legittime, awareness e miglioramento interno autorizzato dal cliente.</span></p>
+          </div>
+        </div>
       </div>
     </section>
 
     <section id="contact">
-      <div class="container">
-        <h2 class="section-title">Contact</h2>
-        <div class="contact-grid">
-          <div class="card contact">
-            <h3>Get in touch</h3>
-            <p>
-              For business inquiries, awareness training, or approved internal simulation requests, contact us by email.
-            </p>
-            <p><strong>Email:</strong> <a href="mailto:security@mailreadiness.com">security@mailreadiness.com</a></p>
-            <p><strong>Domain:</strong> mailreadiness.com</p>
+      <div class="container contact-grid">
+        <div class="card contact-card">
+          <div class="card-topline"><span data-lang="en" class="active inline">Contact</span><span data-lang="it" class="inline">Contatti</span></div>
+          <h2 class="section-title" style="margin-top:0;">
+            <span data-lang="en" class="active inline">Let’s discuss your email security needs</span>
+            <span data-lang="it" class="inline">Parliamo delle tue esigenze di sicurezza email</span>
+          </h2>
+          <p>
+            <span data-lang="en" class="active inline">If your organization wants a clear starting point for email security improvement, reach out and describe your current setup or concern.</span>
+            <span data-lang="it" class="inline">Se la tua organizzazione vuole un punto di partenza chiaro per migliorare la sicurezza email, contattaci e descrivi il setup attuale o la tua esigenza.</span>
+          </p>
+          <div class="contact-links">
+            <div><strong>Email:</strong> <a href="mailto:founder@mailreadiness.com">founder@mailreadiness.com</a></div>
+            <div><strong>Website:</strong> <a href="https://mailreadiness.com" target="_blank" rel="noopener">mailreadiness.com</a></div>
+            <div><strong>LinkedIn:</strong> <a href="#" aria-label="Add your LinkedIn URL here">Add your LinkedIn URL</a></div>
           </div>
+        </div>
 
-          <div class="card contact">
-            <h3>Important note</h3>
-            <p>
-              Services are provided only for authorized internal use, customer-approved environments,
-              and legitimate security awareness or readiness purposes.
-            </p>
-          </div>
+        <div class="card contact-card">
+          <div class="card-topline"><span data-lang="en" class="active inline">Important note</span><span data-lang="it" class="inline">Nota importante</span></div>
+          <h3><span data-lang="en" class="active inline">Authorized use only</span><span data-lang="it" class="inline">Solo uso autorizzato</span></h3>
+          <p>
+            <span data-lang="en" class="active inline">MailReadiness supports legitimate business security improvement. Any optional testing or simulation activity is considered only in explicitly approved customer environments and under clear authorization.</span>
+            <span data-lang="it" class="inline">MailReadiness supporta il miglioramento legittimo della sicurezza aziendale. Qualsiasi attività opzionale di test o simulazione viene considerata solo in ambienti cliente esplicitamente approvati e con autorizzazione chiara.</span>
+          </p>
+          <a class="btn btn-primary" href="mailto:founder@mailreadiness.com?subject=MailReadiness%20Discovery%20Request" style="margin-top: 8px; width: 100%;">
+            <span data-lang="en" class="active inline">Request a discovery call</span>
+            <span data-lang="it" class="inline">Richiedi una call conoscitiva</span>
+          </a>
         </div>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="container">
-      © 2026 Mail Readiness. All rights reserved.
+    <div class="container footer-inner">
+      <div>© 2026 MailReadiness</div>
+      <div>
+        <span data-lang="en" class="active inline">Email security audit, suspicious email review, awareness, and monitoring.</span>
+        <span data-lang="it" class="inline">Audit di sicurezza email, revisione di email sospette, awareness e monitoraggio.</span>
+      </div>
     </div>
   </footer>
+
+  <script>
+    const langButtons = document.querySelectorAll('[data-switch]');
+    const langNodes = document.querySelectorAll('[data-lang]');
+
+    function setLanguage(lang) {
+      document.documentElement.lang = lang;
+      langNodes.forEach(node => {
+        node.classList.remove('active');
+        if (node.dataset.lang === lang) {
+          node.classList.add('active');
+        }
+      });
+
+      langButtons.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.switch === lang);
+      });
+
+      localStorage.setItem('mailreadiness-lang', lang);
+    }
+
+    langButtons.forEach(btn => {
+      btn.addEventListener('click', () => setLanguage(btn.dataset.switch));
+    });
+
+    const savedLang = localStorage.getItem('mailreadiness-lang');
+    if (savedLang === 'it' || savedLang === 'en') {
+      setLanguage(savedLang);
+    } else {
+      setLanguage('en');
+    }
+  </script>
 </body>
 </html>
